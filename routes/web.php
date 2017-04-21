@@ -11,7 +11,12 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', 'CdrController@index');
+
+//Route::get('/', function ()
+//{
+//    return 'hello';
+//});
 
 Route::get('auth/login', function(){
     $credentials = [

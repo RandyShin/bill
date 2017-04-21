@@ -1,30 +1,50 @@
-{{--@if($itemcount = count($items))--}}
-    {{--<p>{{$itemcount}} 종류의 과일이 있습니다.</p>--}}
-    {{--@else--}}
-{{--<p>뻥치시네~~</p>--}}
-    {{--@endif--}}
-
-
-
-<ul>
-    <?php $items = nullValue(); ?>
-        @forelse($items as $item)
-            <li>{{$item}}</li>
-        @empty
-            <li>헐 왈라네</li>
-        @endforelse
-</ul>
-
-
-
 {{--@extends('layouts.master')--}}
 @extends('layouts.master')
 
-{{--@section('style')--}}
-    {{--<style>--}}
-        {{--body{background: green; color: white;}--}}
-    {{--</style>--}}
-{{--@endsection--}}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>No.</td>
+            <td>Src</td>
+            <td>Dst</td>
+            <td>In / Out</td>
+            <td>Duration</td>
+            <td>Billsec</td>
+            <td>Increment</td>
+            <td>Time</td>
+            <td>Disposition</td>
+        </tr>
+    </thead>
 
 
-
+    <tbody>
+        @foreach($cdrs as $key=>$cdr)
+            <tr>
+                <td>{{ $key + 1 }}</td>
+                <td>{{ $cdr->src }}</td>
+                <td>{{ $cdr->dst }}</td>
+                @if( strlen($cdr->src) > 4)
+                    <td>In</td>
+                @else
+                    <td>Out</td>
+                @endif
+                <td>{{ $cdr->duration }}</td>
+                <td>{{ $cdr->billsec }}</td>
+                {{--@if( substr($cdr->dst, 0, 2)  === 01 )--}}
+                    {{--<td>{{ $cdr->billsec / 10 }}</td>--}}
+                {{--@else--}}
+                    {{--<td>{{ $cdr->billsec / 180 }}</td>--}}
+                {{--@endif--}}
+                @if (substr($cdr->dst,0,2) == 01)
+                    <td>{{ ceil($cdr->billsec / 10) }}</td>
+                @else
+                <td>{{ ceil($cdr->billsec / 180) }}</td>
+                @endif
+                <td> {{ substr($cdr->calldate, 11, 8) }}</td>
+                <td>{{ $cdr->disposition }}</td>
+            </tr>
+        @endforeach
+    </tbody>
+</table>
